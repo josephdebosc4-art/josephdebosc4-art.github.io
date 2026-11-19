@@ -1,13 +1,13 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>Connexion TikTok</title><link rel="stylesheet" href="../style.css"></head><body><main>
-<h1>Connexion TikTok</h1><div class="card" id="box"><p class="muted">Lecture de la réponse de TikTok…</p></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Clip Publisher – TikTok</title><link rel="stylesheet" href="../style.css"></head><body><main>
+<h1>Clip Publisher</h1><div class="card" id="box"><p class="muted">Reading TikTok response…</p></div>
 <script>
 const p=new URLSearchParams(location.search),box=document.getElementById('box');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 if(p.get('code')){
-  box.innerHTML='<p>✅ Autorisation reçue. Copie ce code et donne-le à Claude (il expire au bout de quelques minutes) :</p><p><code id="c">'+esc(p.get('code'))+'</code></p><button id="b">Copier le code</button>';
-  document.getElementById('b').onclick=async()=>{try{await navigator.clipboard.writeText(p.get('code'));document.getElementById('b').textContent='Copié ✔'}catch(e){getSelection().selectAllChildren(document.getElementById('c'))}};
+  box.innerHTML='<p>✅ TikTok authorization received.</p><p class="muted">Granted scopes: '+esc(p.get('scopes')||'')+'</p><button id="up">Upload test video to TikTok</button><p class="muted" style="font-size:14px">The video is sent to your TikTok inbox as a draft. Code: <code id="c">'+esc(p.get('code'))+'</code></p>';
+  document.getElementById('up').onclick=()=>{location.href='http://192.168.5.145:5678/webhook/tiktok-demo?code='+encodeURIComponent(p.get('code'))};
 }else if(p.get('error')){
-  box.innerHTML='<p>❌ TikTok a refusé : <code>'+esc(p.get('error'))+'</code></p><p class="muted">'+esc(p.get('error_description')||'')+'</p>';
-}else{box.innerHTML='<p class="muted">Aucun code reçu. Cette page sert de retour après la connexion TikTok.</p>'}
+  box.innerHTML='<p>❌ TikTok returned an error: <code>'+esc(p.get('error'))+'</code></p><p class="muted">'+esc(p.get('error_description')||'')+'</p>';
+}else{box.innerHTML='<p class="muted">No authorization code received.</p>'}
 </script></main></body></html>
